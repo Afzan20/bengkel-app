@@ -2,35 +2,33 @@ import { Bell, Search } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="bg-[#151515] border-b border-zinc-800 px-6 py-5">
-      <div className="flex items-center justify-between gap-5">
-        <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-zinc-400 mt-1">
-            Welcome back, Admin Garage
-          </p>
-        </div>
+    <header className="bg-[#F7F7F7] px-6 py-5 flex items-center justify-between">
+      <div>
+        <h1 className="text-[32px] font-bold leading-[125%]">Hi, Admin Garage</h1>
+        <p className="text-xs text-gray-400">Let&apos;s check your Garage today</p>
+      </div>
 
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center bg-zinc-900 px-4 py-3 rounded-2xl w-80">
-            <Search className="text-zinc-500" size={18} />
+      <div className="hidden md:flex items-center bg-white px-4 py-3 rounded-lg w-80">
+        <Search size={16} className="text-gray-400" />
+        <input
+          placeholder="Search..."
+          className="bg-transparent outline-none ml-3 text-sm w-full"
+        />
+      </div>
 
-            <input
-              type="text"
-              placeholder="Search service..."
-              className="bg-transparent outline-none ml-3 text-sm w-full"
-            />
-          </div>
+      <div className="flex items-center gap-4">
+        <Bell size={18} className="text-black" />
 
-          <button className="w-12 h-12 rounded-2xl bg-zinc-900 flex items-center justify-center hover:bg-zinc-800 transition-all">
-            <Bell size={20} />
-          </button>
-
+        <div className="flex items-center gap-3">
           <img
             src="https://i.pravatar.cc/100"
-            alt="profile"
-            className="w-12 h-12 rounded-2xl object-cover"
+            className="w-10 h-10 rounded-full"
           />
+
+          <div className="hidden md:block">
+            <h2 className="text-sm font-bold text-black">Admin</h2>
+            <p className="text-xs text-gray-400">Owner</p>
+          </div>
         </div>
       </div>
     </header>

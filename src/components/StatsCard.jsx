@@ -8,7 +8,7 @@ export default function StatsCard({
       <p className="text-zinc-400 text-sm">{title}</p>
 
       <div className="flex items-end justify-between mt-5">
-        <h1 className="text-4xl font-bold">{value}</h1>
+        <h1 className="text-[32px] font-bold leading-[125%]">{value}</h1>
 
         <span className="text-orange-500 text-sm font-semibold">
           {growth}

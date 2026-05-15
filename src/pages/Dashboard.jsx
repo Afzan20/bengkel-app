@@ -1,112 +1,145 @@
-import StatsCard from "../components/StatsCard";
-import ServiceCard from "../components/ServiceCard";
+import { MoreVertical } from "lucide-react";
+import Badge from "../components/Badge";
 
 export default function Dashboard() {
-  const services = [
-    {
-      title: "Engine Repair",
-      desc: "Professional engine repair with experienced mechanics.",
-      image:
-        "https://images.unsplash.com/photo-1487754180451-c456f719a1fc",
-    },
-
-    {
-      title: "Brake Repair",
-      desc: "Safe brake replacement and maintenance service.",
-      image:
-        "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e",
-    },
-
-    {
-      title: "Oil Change",
-      desc: "Premium oil replacement for better engine performance.",
-      image:
-        "https://images.unsplash.com/photo-1632823471565-1ecdf1f2c8dc",
-    },
+  const cards = [
+    { title: "New Net Income", value: "£8,245.00" },
+    { title: "Total Bookings", value: "256" },
+    { title: "Resolved Issues", value: "1,256" },
   ];
 
   return (
-    <div className="space-y-8">
-      <section className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-[32px] p-8 md:p-12 overflow-hidden relative">
-        <div className="max-w-2xl relative z-10">
-          <p className="uppercase tracking-[5px] text-sm text-orange-100">
-            GaragePro Workshop
-          </p>
+    <div className="space-y-6">
+      <section className="grid md:grid-cols-3 gap-5">
+        {cards.map((card, index) => (
+          <div key={index} className="bg-white rounded-xl p-5">
+            <div className="flex justify-between">
+              <p className="text-sm font-bold text-black">{card.title}</p>
+              <MoreVertical size={18} />
+            </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold mt-4 leading-tight">
-            Professional Car Repair & Service
-          </h1>
+            <h1 className="text-[32px] font-bold leading-[125%]">{card.value}</h1>
 
-          <p className="mt-6 text-orange-100 text-lg leading-relaxed">
-            Fast, trusted and professional automotive services for your vehicle.
-          </p>
-
-          <button className="mt-8 bg-black hover:bg-zinc-900 px-6 py-4 rounded-2xl font-semibold transition-all duration-300">
-            Book Appointment
-          </button>
-        </div>
-
-        <img
-          src="https://images.unsplash.com/photo-1503376780353-7e6692767b70"
-          alt="car"
-          className="absolute right-0 bottom-0 h-full w-[45%] object-cover hidden lg:block"
-        />
-      </section>
-
-      <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <StatsCard
-          title="Total Customers"
-          value="1,240"
-          growth="+12%"
-        />
-
-        <StatsCard
-          title="Cars Repaired"
-          value="890"
-          growth="+8%"
-        />
-
-        <StatsCard
-          title="Bookings"
-          value="320"
-          growth="+15%"
-        />
-
-        <StatsCard
-          title="Mechanics"
-          value="12"
-          growth="+5%"
-        />
-      </section>
-
-        <section>
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">
-              Popular Services
-            </h1>
-
-            <p className="text-zinc-400 mt-2">
-              Most requested automotive services
+            <p className="text-xs text-[#A7AF1D] mt-2">
+              ↗ +20% from last week
             </p>
           </div>
+        ))}
+      </section>
 
-          <button className="bg-zinc-800 hover:bg-zinc-700 px-5 py-3 rounded-2xl transition-all duration-300">
-            View All
+      <section className="grid lg:grid-cols-3 gap-5">
+        <div className="lg:col-span-2 bg-white rounded-xl p-6">
+          <div className="flex justify-between mb-6">
+            <div>
+              <p className="text-sm text-gray-400">Overall Sales</p>
+              <h1 className="text-[32px] font-bold leading-[125%]">£56,345.98</h1>
+            </div>
+
+            <button className="bg-[#F7F7F7] px-4 py-2 rounded-lg text-sm">
+              Last 7 month
+            </button>
+          </div>
+
+          <div className="h-56 flex items-end gap-5">
+            {[70, 120, 90, 160, 110, 140, 80].map((h, i) => (
+              <div key={i} className="flex-1 bg-[#E5F12C]/20 rounded-t-xl relative">
+                <div
+                  style={{ height: `${h}px` }}
+                  className="absolute bottom-0 w-full bg-[#E5F12C] rounded-t-xl"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-6">
+          <h1 className="text-[32px] font-bold leading-[125%]">Sales Report</h1>
+
+          <div className="w-40 h-40 rounded-full border-[28px] border-[#E5F12C] mx-auto mt-8 flex items-center justify-center">
+            <div className="w-12 h-12 bg-[#A7AF1D] rounded-full" />
+          </div>
+
+          <button className="w-full mt-8 bg-[#A7AF1D] text-white py-3 rounded-lg font-bold">
+            Export Now
           </button>
         </div>
-
-        <div className="grid lg:grid-cols-3 gap-6">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={index}
-              title={service.title}
-              desc={service.desc}
-              image={service.image}
-            />
-          ))}
-        </div>
       </section>
+
+      <section className="bg-white rounded-xl p-6">
+  
+          <h1 className="text-[32px] font-bold leading-[125%] text-black">
+            Recent Order
+          </h1>
+
+          <table className="w-full text-sm mt-6">
+
+            <thead>
+              <tr className="text-left text-gray-400 border-b border-gray-100">
+                
+                <th className="pb-4 font-medium">
+                  No
+                </th>
+
+                <th className="pb-4 font-medium">
+                  User Name
+                </th>
+
+                <th className="pb-4 font-medium">
+                  Order Date
+                </th>
+
+                <th className="pb-4 font-medium">
+                  Status
+                </th>
+
+                <th className="pb-4 font-medium">
+                  Price
+                </th>
+
+              </tr>
+            </thead>
+
+            <tbody className="text-black">
+
+              {["Shift Creme", "Shift Creme", "Shift Creme"].map((name, i) => (
+
+                <tr
+                  key={i}
+                  className="border-b border-gray-100 hover:bg-gray-50 transition"
+                >
+
+                  <td className="py-5">
+                    0{i + 1}
+                  </td>
+
+                  <td className="font-semibold">
+                    {name}
+                  </td>
+
+                  <td>
+                    March 24, 2022
+                  </td>
+
+                  <td>
+                    <Badge
+                      type="success"
+                      text="Repaired"
+                    />
+                  </td>
+
+                  <td className="font-bold">
+                    £130
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </section>
     </div>
   );
 }

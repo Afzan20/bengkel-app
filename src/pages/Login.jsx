@@ -1,53 +1,96 @@
 import { useNavigate } from "react-router-dom";
+import { Eye, Mail } from "lucide-react";
+import { useState } from "react";
+import Alert from "../components/Alert";
 
 export default function Login() {
-
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
 
   return (
-    <div className="w-full max-w-md bg-[#1B1B1B] border border-zinc-800 rounded-[32px] p-8">
-      
-      <h1 className="text-4xl font-bold text-white">
-        Welcome Back
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
+      <h1 className="text-[32px] font-bold leading-[125%]">
+        Login to your account
       </h1>
 
-      <p className="text-zinc-400 mt-3">
-        Login to continue using GaragePro
-      </p>
-
-      <div className="space-y-5 mt-10">
-
-        <div>
-          <label className="text-sm text-zinc-400">
-            Email
-          </label>
-
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="w-full mt-2 bg-zinc-900 p-4 rounded-2xl outline-none border border-zinc-800 focus:border-orange-500 transition-all"
+      {error && (
+          <Alert
+            type="error"
+            message={error}
           />
-        </div>
+        )}
 
-        <div>
-          <label className="text-sm text-zinc-400">
-            Password
-          </label>
+      <div className="mt-8 space-y-4">
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full bg-[#F7F7F7] px-4 py-4 rounded-lg outline-none text-sm"
+        />
 
+        <div className="relative">
           <input
             type="password"
-            placeholder="Enter your password"
-            className="w-full mt-2 bg-zinc-900 p-4 rounded-2xl outline-none border border-zinc-800 focus:border-orange-500 transition-all"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full bg-[#F7F7F7] px-4 py-4 rounded-lg outline-none text-sm"
           />
+          <Eye size={18} className="absolute right-4 top-4 text-gray-400" />
+        </div>
+
+        <div className="flex justify-between text-xs">
+          <label className="flex gap-2 items-center text-gray-600">
+            <input type="radio" />
+            Remember me
+          </label>
+
+          <button className="text-[#A7AF1D] font-semibold">
+            Forgot Password?
+          </button>
         </div>
 
         <button
-          onClick={() => navigate("/dashboard")}
-          className="w-full bg-orange-500 hover:bg-orange-600 p-4 rounded-2xl font-semibold transition-all duration-300"
+          onClick={() => {
+
+            if (!email || !password) {
+              setError("All fields are required");
+              return;
+            }
+
+            setError("");
+
+            navigate("/dashboard");
+          }}
+          className="w-full bg-[#DDE33E] hover:bg-[#9FA324] text-black py-4 rounded-lg font-bold transition"
         >
-          Login
+          Sign in with email
         </button>
 
+        <div className="flex items-center gap-3 text-xs text-gray-400">
+          <div className="h-px flex-1 bg-gray-200" />
+          Or login with
+          <div className="h-px flex-1 bg-gray-200" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <button className="border border-gray-200 py-3 rounded-lg text-sm">
+            Google
+          </button>
+
+          <button className="border border-gray-200 py-3 rounded-lg text-sm">
+            Apple
+          </button>
+        </div>
+
+        <p className="text-center text-xs text-gray-500">
+          Don&apos;t have an account?{" "}
+          <span className="text-[#A7AF1D] font-bold">Get Started</span>
+        </p>
       </div>
     </div>
   );
