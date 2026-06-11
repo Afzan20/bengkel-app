@@ -1,44 +1,41 @@
-export default function Modal({
-  open,
-  onClose,
-  onConfirm,
-}) {
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-  if (!open) return null;
-
+export default function Modal({ open, onClose, onConfirm }) {
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="bg-white rounded-2xl border-none">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-black">
+            Logout
+          </DialogTitle>
 
-      <div className="bg-white p-6 rounded-2xl w-full max-w-md">
+          <DialogDescription className="text-gray-500">
+            Are you sure want to logout?
+          </DialogDescription>
+        </DialogHeader>
 
-        <h1 className="text-2xl font-bold">
-          Logout
-        </h1>
-
-        <p className="text-gray-500 mt-3">
-          Are you sure want to logout?
-        </p>
-
-        <div className="flex justify-end gap-3 mt-8">
-
+        <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="px-5 py-3 rounded-xl bg-gray-100"
+            className="px-5 py-3 rounded-xl bg-gray-100 text-black"
           >
             Cancel
           </button>
 
           <button
             onClick={onConfirm}
-            className="px-5 py-3 rounded-xl bg-[#DDE33E] font-semibold"
+            className="px-5 py-3 rounded-xl bg-[#DEE33E] text-black font-semibold"
           >
             Logout
           </button>
-
         </div>
-
-      </div>
-
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

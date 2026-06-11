@@ -1,3 +1,5 @@
+import { Input } from "@/components/ui/input";
+
 export default function InputField({
   type = "text",
   placeholder,
@@ -7,12 +9,12 @@ export default function InputField({
 }) {
   return (
     <div className="relative">
-      <input
+      <Input
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="w-full bg-[#F7F7F7] px-4 py-4 rounded-lg outline-none text-sm border border-transparent focus:border-[#DEE33E] transition"
+        className="w-full bg-[#F7F7F7] px-4 py-6 rounded-lg outline-none text-sm border border-transparent focus-visible:ring-0 focus-visible:border-[#DEE33E]"
       />
 
       {icon && (
