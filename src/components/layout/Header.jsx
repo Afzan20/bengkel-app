@@ -1,4 +1,4 @@
-import SearchInput from "./SearchInput";
+import SearchInput from "../common/SearchInput";
 import NotificationButton from "./NotificationButton";
 import ProfileMenu from "./ProfileMenu";
 

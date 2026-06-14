@@ -5,13 +5,14 @@ import {
   CalendarDays,
   Settings,
   LogOut,
+  UserRound,
 } from "lucide-react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 import SidebarMenuItem from "./SidebarMenuItem";
-import Modal from "./Modal";
+import Modal from "../common/Modal";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ export default function Sidebar() {
       path: "/customers",
     },
     {
+      title: "Member",
+      icon: <UserRound size={18} />,
+      path: "/member",
+    },
+    {
       title: "Bookings",
       icon: <CalendarDays size={18} />,
       path: "/bookings",
@@ -56,9 +62,7 @@ export default function Sidebar() {
           <div className="w-5 h-10 bg-[#DEE33E] rounded-full rotate-[-15deg]" />
         </div>
 
-        <h1 className="font-bold text-black text-xl">
-          GaragePro
-        </h1>
+        <h1 className="font-bold text-black text-xl">GaragePro</h1>
       </div>
 
       <nav className="space-y-3 flex-1">
@@ -84,7 +88,13 @@ export default function Sidebar() {
       <Modal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        onConfirm={() => navigate("/")}
+        onConfirm={() => {
+          localStorage.removeItem("currentUser");
+
+          setOpenModal(false);
+
+          navigate("/");
+        }}
       />
     </aside>
   );

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye } from "lucide-react";
 import { Link } from "react-router-dom";
-import InputField from "../components/InputField";
-import Button from "../components/Button";
-import Alert from "../components/Alert";
+import InputField from "../components/common/InputField";
+import Button from "../components/common/Button";
+import Alert from "../components/common/Alert";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,10 +14,27 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const handleLogin = () => {
+    const registeredUser = JSON.parse(localStorage.getItem("registeredUser"));
+
     if (!email || !password) {
       setError("All fields are required");
       return;
     }
+
+    if (!registeredUser) {
+      setError("Account not found, please register first");
+      return;
+    }
+
+    if (
+      email !== registeredUser.email ||
+      password !== registeredUser.password
+    ) {
+      setError("Email or password is incorrect");
+      return;
+    }
+
+    localStorage.setItem("currentUser", JSON.stringify(registeredUser));
 
     setError("");
     navigate("/dashboard");

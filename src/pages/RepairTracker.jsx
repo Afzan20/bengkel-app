@@ -1,4 +1,4 @@
-import Badge from "../components/Badge";
+import Badge from "../components/common/Badge";
 
 export default function RepairTracker() {
   const repairs = [

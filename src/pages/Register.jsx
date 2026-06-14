@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import InputField from "../components/InputField";
-import Button from "../components/Button";
-import Alert from "../components/Alert";
+import InputField from "../components/common/InputField";
+import Button from "../components/common/Button";
+import Alert from "../components/common/Alert";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -16,19 +16,37 @@ export default function Register() {
   const [success, setSuccess] = useState("");
 
   const handleRegister = () => {
-    if (!fullname || !email || !password) {
-      setSuccess("");
-      setError("All fields are required");
-      return;
-    }
+  if (!fullname || !email || !password) {
+    setSuccess("");
+    setError("All fields are required");
+    return;
+  }
 
-    setError("");
-    setSuccess("Account successfully created");
-
-    setTimeout(() => {
-      navigate("/");
-    }, 800);
+  const newUser = {
+    id: "CUST-001",
+    fullname,
+    username: fullname.toLowerCase().replaceAll(" ", "_"),
+    email,
+    password,
+    phone: "0812-3456-7890",
+    gender: "Laki-laki",
+    birthDate: "15 Maret 1998",
+    address: "Pekanbaru, Riau",
+    memberLevel: "Gold",
+    status: "Active Member",
+    joinDate: "10 Januari 2026",
+    referralCode: "GARAGE10",
   };
+
+  localStorage.setItem("registeredUser", JSON.stringify(newUser));
+
+  setError("");
+  setSuccess("Account successfully created");
+
+  setTimeout(() => {
+    navigate("/");
+  }, 800);
+};
 
   return (
     <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">

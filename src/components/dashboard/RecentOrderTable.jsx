@@ -1,4 +1,4 @@
-import TableRow from "./TableRow";
+import TableRow from "../common/TableRow";
 
 export default function RecentOrderTable() {
   const orders = [
