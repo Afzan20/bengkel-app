@@ -1,5 +1,16 @@
+import { useEffect, useState } from "react";
+
 export default function ProfileMenu() {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const user = JSON.parse(
+      localStorage.getItem("currentUser")
+    );
+
+    setCurrentUser(user);
+  }, []);
 
   return (
     <div className="flex items-center gap-3">

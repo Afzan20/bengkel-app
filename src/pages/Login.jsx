@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye } from "lucide-react";
+import { supabase } from "../lib/supabase";
 import { Link } from "react-router-dom";
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
@@ -8,37 +9,44 @@ import Alert from "../components/common/Alert";
 
 export default function Login() {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const emailRef = useRef(null);
+  useEffect(() => {
+    emailRef.current?.focus();
+  }, []);
 
-  const handleLogin = () => {
-    const registeredUser = JSON.parse(localStorage.getItem("registeredUser"));
+  const handleLogin = async () => {
+  if (!email || !password) {
+    setError("All fields are required");
+    return;
+  }
 
-    if (!email || !password) {
-      setError("All fields are required");
-      return;
-    }
+  const { data: user, error: dbError } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
 
-    if (!registeredUser) {
-      setError("Account not found, please register first");
-      return;
-    }
+  if (dbError || !user) {
+    setError("Account not found");
+    return;
+  }
 
-    if (
-      email !== registeredUser.email ||
-      password !== registeredUser.password
-    ) {
-      setError("Email or password is incorrect");
-      return;
-    }
+  if (password !== user.password) {
+    setError("Email or password is incorrect");
+    return;
+  }
 
-    localStorage.setItem("currentUser", JSON.stringify(registeredUser));
+  localStorage.setItem(
+    "currentUser",
+    JSON.stringify(user)
+  );
 
-    setError("");
-    navigate("/dashboard");
-  };
+  setError("");
+  navigate("/dashboard");
+};
 
   return (
     <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
@@ -54,6 +62,7 @@ export default function Login() {
 
       <div className="mt-8 space-y-4">
         <InputField
+          ref={emailRef}
           type="email"
           placeholder="Email"
           value={email}

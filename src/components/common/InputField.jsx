@@ -1,15 +1,14 @@
+import { forwardRef } from "react";
 import { Input } from "@/components/ui/input";
 
-export default function InputField({
-  type = "text",
-  placeholder,
-  value,
-  onChange,
-  icon,
-}) {
+const InputField = forwardRef(function InputField(
+  { type = "text", placeholder, value, onChange, icon },
+  ref
+) {
   return (
     <div className="relative">
       <Input
+        ref={ref}
         type={type}
         placeholder={placeholder}
         value={value}
@@ -24,4 +23,6 @@ export default function InputField({
       )}
     </div>
   );
-}
+});
+
+export default InputField;

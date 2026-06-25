@@ -12,7 +12,8 @@ const Inventory = lazy(() => import("./pages/Inventory"));
 const RepairTracker = lazy(() => import("./pages/RepairTracker"));
 const Customers = lazy(() => import("./pages/Customers"));
 const Bookings = lazy(() => import("./pages/Bookings"));
-const Member = lazy(() => import("./pages/Member"));
+const MemberProfile = lazy(() => import("./pages/MemberProfile"));
+const Members = lazy(() => import("./pages/Members"));
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
           <Route path="/repair" element={<RepairTracker />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/bookings" element={<Bookings />} />
-          <Route path="/member" element={<Member />} />
+          <Route path="/memberprofile" element={<MemberProfile />} />
+          <Route path="/members" element={<Members/>} />
         </Route>
 
         <Route element={<AuthLayout />}>

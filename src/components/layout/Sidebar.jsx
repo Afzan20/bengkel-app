@@ -42,9 +42,14 @@ export default function Sidebar() {
       path: "/customers",
     },
     {
+      title: "Member Profile",
+      icon: <UserRound size={18} />,
+      path: "/memberprofile",
+    },
+    {
       title: "Member",
       icon: <UserRound size={18} />,
-      path: "/member",
+      path: "/members",
     },
     {
       title: "Bookings",

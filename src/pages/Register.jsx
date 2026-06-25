@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 import InputField from "../components/common/InputField";
 import Button from "../components/common/Button";
@@ -15,38 +16,50 @@ export default function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleRegister = () => {
-  if (!fullname || !email || !password) {
-    setSuccess("");
-    setError("All fields are required");
-    return;
-  }
+  const handleRegister = async () => {
+    if (!fullname || !email || !password) {
+      setSuccess("");
+      setError("All fields are required");
+      return;
+    }
 
-  const newUser = {
-    id: "CUST-001",
-    fullname,
-    username: fullname.toLowerCase().replaceAll(" ", "_"),
-    email,
-    password,
-    phone: "0812-3456-7890",
-    gender: "Laki-laki",
-    birthDate: "15 Maret 1998",
-    address: "Pekanbaru, Riau",
-    memberLevel: "Gold",
-    status: "Active Member",
-    joinDate: "10 Januari 2026",
-    referralCode: "GARAGE10",
+    const username = fullname.toLowerCase().replaceAll(" ", "_");
+
+    const { data: existingUser } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (existingUser) {
+      setSuccess("");
+      setError("Email already registered");
+      return;
+    }
+
+    const { error: insertError } = await supabase.from("users").insert([
+      {
+        fullname,
+        username,
+        email,
+        password,
+        status: "Active",
+      },
+    ]);
+
+    if (insertError) {
+      setSuccess("");
+      setError(insertError.message);
+      return;
+    }
+
+    setError("");
+    setSuccess("Account successfully created");
+
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
-
-  localStorage.setItem("registeredUser", JSON.stringify(newUser));
-
-  setError("");
-  setSuccess("Account successfully created");
-
-  setTimeout(() => {
-    navigate("/");
-  }, 800);
-};
 
   return (
     <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
@@ -92,9 +105,7 @@ export default function Register() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button onClick={handleRegister}>
-          Register
-        </Button>
+        <Button onClick={handleRegister}>Register</Button>
 
         <p className="text-center text-[13px] leading-[160%] text-gray-500">
           Already have an account?{" "}
