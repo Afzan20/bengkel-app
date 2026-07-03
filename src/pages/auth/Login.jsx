@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye } from "lucide-react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 import { Link } from "react-router-dom";
-import InputField from "../components/common/InputField";
-import Button from "../components/common/Button";
-import Alert from "../components/common/Alert";
+import InputField from "../../components/common/InputField";
+import Button from "../../components/common/Button";
+import Alert from "../../components/common/Alert";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,35 +18,50 @@ export default function Login() {
   }, []);
 
   const handleLogin = async () => {
-  if (!email || !password) {
-    setError("All fields are required");
-    return;
-  }
+    if (!email || !password) {
+      setError("All fields are required");
+      return;
+    }
 
-  const { data: user, error: dbError } = await supabase
-    .from("users")
-    .select("*")
-    .eq("email", email)
-    .single();
+    const { data: user, error: dbError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
 
-  if (dbError || !user) {
-    setError("Account not found");
-    return;
-  }
+    if (dbError || !user) {
+      setError("Account not found");
+      return;
+    }
 
-  if (password !== user.password) {
-    setError("Email or password is incorrect");
-    return;
-  }
+    if (password !== user.password) {
+      setError("Email or password is incorrect");
+      return;
+    }
 
-  localStorage.setItem(
-    "currentUser",
-    JSON.stringify(user)
-  );
+    if (user.status !== "Active") {
+      setError("Your account is inactive");
+      return;
+    }
 
-  setError("");
-  navigate("/dashboard");
-};
+    const currentUser = {
+      id: user.id,
+      fullname: user.fullname,
+      username: user.username,
+      email: user.email,
+      membership: user.membership,
+      role: user.role,
+    };
+
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+    setError("");
+    if (user.role === "admin") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/member/dashboard");
+    }
+  };
 
   return (
     <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">

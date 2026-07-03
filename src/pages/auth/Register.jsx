@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 
-import InputField from "../components/common/InputField";
-import Button from "../components/common/Button";
-import Alert from "../components/common/Alert";
+import InputField from "../../components/common/InputField";
+import Button from "../../components/common/Button";
+import Alert from "../../components/common/Alert";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -43,7 +43,9 @@ export default function Register() {
         username,
         email,
         password,
+        membership: "Basic",
         status: "Active",
+        role: "member",
       },
     ]);
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Table from "../components/common/Table";
-import Badge from "../components/common/Badge";
-import StatusSelect from "../components/inventory/StatusSelect";
+import Table from "../../components/common/Table";
+import Badge from "../../components/common/Badge";
+import StatusSelect from "../../components/inventory/StatusSelect";
 
 export default function Bookings() {
   const [status, setStatus] = useState("all");

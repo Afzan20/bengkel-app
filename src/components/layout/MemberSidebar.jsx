@@ -1,11 +1,14 @@
 import {
   LayoutDashboard,
+  Car,
+  CalendarPlus,
+  History,
   Wrench,
-  Users,
-  CalendarDays,
+  Receipt,
+  Crown,
+  UserRound,
   Settings,
   LogOut,
-  UserRound,
 } from "lucide-react";
 
 import { useNavigate, useLocation } from "react-router-dom";
@@ -14,7 +17,7 @@ import { useState } from "react";
 import SidebarMenuItem from "./SidebarMenuItem";
 import Modal from "../common/Modal";
 
-export default function Sidebar() {
+export default function MemberSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,37 +27,47 @@ export default function Sidebar() {
     {
       title: "Dashboard",
       icon: <LayoutDashboard size={18} />,
-      path: "/dashboard",
+      path: "/member/dashboard",
     },
     {
-      title: "Inventory",
-      icon: <Wrench size={18} />,
-      path: "/inventory",
+      title: "My Vehicles",
+      icon: <Car size={18} />,
+      path: "/member/my-vehicles",
+    },
+    {
+      title: "Booking Service",
+      icon: <CalendarPlus size={18} />,
+      path: "/member/booking",
+    },
+    {
+      title: "Booking History",
+      icon: <History size={18} />,
+      path: "/member/history",
     },
     {
       title: "Repair Tracker",
+      icon: <Wrench size={18} />,
+      path: "/member/repair",
+    },
+    {
+      title: "Transactions",
+      icon: <Receipt size={18} />,
+      path: "/member/transactions",
+    },
+    {
+      title: "Membership",
+      icon: <Crown size={18} />,
+      path: "/member/membership",
+    },
+    {
+      title: "Profile",
+      icon: <UserRound size={18} />,
+      path: "/member/profile",
+    },
+    {
+      title: "Settings",
       icon: <Settings size={18} />,
-      path: "/repair",
-    },
-    {
-      title: "Customers",
-      icon: <Users size={18} />,
-      path: "/customers",
-    },
-    {
-      title: "Member Profile",
-      icon: <UserRound size={18} />,
-      path: "/memberprofile",
-    },
-    {
-      title: "Member",
-      icon: <UserRound size={18} />,
-      path: "/members",
-    },
-    {
-      title: "Bookings",
-      icon: <CalendarDays size={18} />,
-      path: "/bookings",
+      path: "/member/settings",
     },
   ];
 

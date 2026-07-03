@@ -1,7 +1,7 @@
-import StatsCard from "../components/dashboard/StatsCard";
-import SalesChartCard from "../components/dashboard/SalesChartCard";
-import SalesReportCard from "../components/dashboard/SalesReportCard";
-import RecentOrderTable from "../components/dashboard/RecentOrderTable";
+import StatsCard from "../../components/dashboard/StatsCard";
+import SalesChartCard from "../../components/dashboard/SalesChartCard";
+import SalesReportCard from "../../components/dashboard/SalesReportCard";
+import RecentOrderTable from "../../components/dashboard/RecentOrderTable";
 
 export default function Dashboard() {
   const cards = [
