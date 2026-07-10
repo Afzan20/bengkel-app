@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import Button from "../common/Button";
-import InputField from "../common/InputField";
 
 export default function VehicleForm({
   initialData,
@@ -30,88 +28,97 @@ export default function VehicleForm({
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(form);
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="w-full p-6">
 
-      <InputField
-        name="plate_number"
-        placeholder="Plate Number"
-        value={form.plate_number}
-        onChange={handleChange}
-      />
+      <h2 className="text-xl font-bold mb-5">
+        {initialData ? "Edit Vehicle" : "Add Vehicle"}
+      </h2>
 
-      <InputField
-        name="brand"
-        placeholder="Brand"
-        value={form.brand}
-        onChange={handleChange}
-      />
+      <div className="space-y-3">
 
-      <InputField
-        name="model"
-        placeholder="Model"
-        value={form.model}
-        onChange={handleChange}
-      />
+        <input
+          name="plate_number"
+          placeholder="Plate Number"
+          className="w-full border p-2 rounded"
+          value={form.plate_number}
+          onChange={handleChange}
+        />
 
-      <InputField
-        name="year"
-        type="number"
-        placeholder="Year"
-        value={form.year}
-        onChange={handleChange}
-      />
+        <input
+          name="brand"
+          placeholder="Brand"
+          className="w-full border p-2 rounded"
+          value={form.brand}
+          onChange={handleChange}
+        />
 
-      <InputField
-        name="color"
-        placeholder="Color"
-        value={form.color}
-        onChange={handleChange}
-      />
+        <input
+          name="model"
+          placeholder="Model"
+          className="w-full border p-2 rounded"
+          value={form.model}
+          onChange={handleChange}
+        />
 
-      <select
-        name="transmission"
-        value={form.transmission}
-        onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-3"
-      >
-        <option value="">Transmission</option>
-        <option value="Manual">Manual</option>
-        <option value="Automatic">Automatic</option>
-      </select>
+        <input
+          name="year"
+          placeholder="Year"
+          className="w-full border p-2 rounded"
+          value={form.year}
+          onChange={handleChange}
+        />
 
-      <select
-        name="fuel_type"
-        value={form.fuel_type}
-        onChange={handleChange}
-        className="w-full border rounded-lg px-4 py-3"
-      >
-        <option value="">Fuel Type</option>
-        <option value="Bensin">Bensin</option>
-        <option value="Diesel">Diesel</option>
-        <option value="Hybrid">Hybrid</option>
-        <option value="Electric">Electric</option>
-      </select>
+        <input
+          name="color"
+          placeholder="Color"
+          className="w-full border p-2 rounded"
+          value={form.color}
+          onChange={handleChange}
+        />
 
-      <div className="flex justify-end gap-3 pt-4">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCancel}
+        <select
+          name="transmission"
+          className="w-full border p-2 rounded"
+          value={form.transmission}
+          onChange={handleChange}
         >
-          Cancel
-        </Button>
+          <option value="">Transmission</option>
+          <option>Automatic</option>
+          <option>Manual</option>
+        </select>
 
-        <Button type="submit">
-          Save Vehicle
-        </Button>
+        <select
+          name="fuel_type"
+          className="w-full border p-2 rounded"
+          value={form.fuel_type}
+          onChange={handleChange}
+        >
+          <option value="">Fuel Type</option>
+          <option>Gasoline</option>
+          <option>Diesel</option>
+          <option>Electric</option>
+        </select>
+
       </div>
 
-    </form>
+      <div className="flex justify-end gap-3 mt-6">
+
+        <button
+          onClick={onCancel}
+          className="px-4 py-2 rounded border"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={() => onSubmit(form)}
+          className="px-4 py-2 bg-[#DEE33E] rounded font-semibold"
+        >
+          Save
+        </button>
+
+      </div>
+    </div>
   );
 }

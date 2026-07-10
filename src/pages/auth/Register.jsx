@@ -27,7 +27,7 @@ export default function Register() {
 
     const { data: existingUser } = await supabase
       .from("users")
-      .select("*")
+      .select("id")
       .eq("email", email)
       .single();
 
@@ -37,21 +37,42 @@ export default function Register() {
       return;
     }
 
-    const { error: insertError } = await supabase.from("users").insert([
-      {
-        fullname,
-        username,
-        email,
-        password,
-        membership: "Basic",
-        status: "Active",
-        role: "member",
-      },
-    ]);
+    // Insert user
+    const { data: newUser, error: insertError } = await supabase
+      .from("users")
+      .insert([
+        {
+          fullname,
+          username,
+          email,
+          password,
+          status: "Active",
+          role: "member",
+        },
+      ])
+      .select()
+      .single();
 
     if (insertError) {
       setSuccess("");
       setError(insertError.message);
+      return;
+    }
+
+    // Insert membership
+    const { error: memberError } = await supabase.from("members").insert([
+      {
+        user_id: newUser.id,
+        membership_level: "Bronze",
+        points: 0,
+        join_date: new Date().toISOString().split("T")[0],
+        status: "Active",
+      },
+    ]);
+
+    if (memberError) {
+      setSuccess("");
+      setError(memberError.message);
       return;
     }
 
