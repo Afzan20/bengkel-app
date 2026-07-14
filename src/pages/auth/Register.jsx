@@ -53,26 +53,11 @@ export default function Register() {
       .select()
       .single();
 
+    console.log("NEW USER:", newUser);
+
     if (insertError) {
       setSuccess("");
       setError(insertError.message);
-      return;
-    }
-
-    // Insert membership
-    const { error: memberError } = await supabase.from("members").insert([
-      {
-        user_id: newUser.id,
-        membership_level: "Bronze",
-        points: 0,
-        join_date: new Date().toISOString().split("T")[0],
-        status: "Active",
-      },
-    ]);
-
-    if (memberError) {
-      setSuccess("");
-      setError(memberError.message);
       return;
     }
 
@@ -80,7 +65,7 @@ export default function Register() {
     setSuccess("Account successfully created");
 
     setTimeout(() => {
-      navigate("/");
+      navigate("/login");
     }, 1000);
   };
 

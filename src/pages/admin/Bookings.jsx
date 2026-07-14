@@ -5,7 +5,7 @@ import Table from "../../components/common/Table";
 import Badge from "../../components/common/Badge";
 import StatusSelect from "../../components/inventory/StatusSelect";
 import FormModal from "../../components/common/FormModal";
-import BookingForm from "../../components/booking/BookingForm";
+import BookingProcessForm from "../../components/booking/BookingProcessForm";
 
 export default function Bookings() {
   const [bookings, setBookings] = useState([]);
@@ -22,7 +22,8 @@ export default function Bookings() {
   async function getBookings() {
     const { data, error } = await supabase
       .from("bookings")
-      .select(`
+      .select(
+        `
         *,
         users (
           fullname
@@ -38,7 +39,8 @@ export default function Bookings() {
         mechanics (
           fullname
         )
-      `)
+      `,
+      )
       .order("created_at", {
         ascending: false,
       });
@@ -57,21 +59,17 @@ export default function Bookings() {
 
       const matchSearch =
         booking.booking_code.toLowerCase().includes(keyword) ||
-        booking.users?.fullname
-          ?.toLowerCase()
-          .includes(keyword) ||
-        booking.services?.service_name
-          ?.toLowerCase()
-          .includes(keyword);
+        booking.users?.fullname?.toLowerCase().includes(keyword) ||
+        booking.services?.service_name?.toLowerCase().includes(keyword);
 
       const matchStatus =
         status === "all"
           ? true
           : status === "success"
-          ? booking.status === "Completed"
-          : status === "pending"
-          ? booking.status === "Pending"
-          : booking.status === "Cancelled";
+            ? booking.status === "Completed"
+            : status === "pending"
+              ? booking.status === "Pending"
+              : booking.status === "Cancelled";
 
       return matchSearch && matchStatus;
     });
@@ -82,18 +80,18 @@ export default function Bookings() {
     setOpenModal(true);
   }
 
+  function handleProcess(item) {
+    setSelectedBooking(item);
+    setOpenModal(true);
+  }
+
   function handleEdit(item) {
     setSelectedBooking(item);
     setOpenModal(true);
   }
 
   async function handleDelete(item) {
-    if (
-      !window.confirm(
-        `Delete booking ${item.booking_code}?`
-      )
-    )
-      return;
+    if (!window.confirm(`Delete booking ${item.booking_code}?`)) return;
 
     const { error } = await supabase
       .from("bookings")
@@ -116,9 +114,7 @@ export default function Bookings() {
         getBookings();
       }
     } else {
-      const { error } = await supabase
-        .from("bookings")
-        .insert([form]);
+      const { error } = await supabase.from("bookings").insert([form]);
 
       if (!error) {
         getBookings();
@@ -132,44 +128,27 @@ export default function Bookings() {
   return (
     <>
       <section className="bg-white rounded-xl p-6 shadow-sm">
-
         <div className="flex justify-between items-center mb-6">
-
           <div>
-            <h1 className="text-3xl font-bold">
-              Bookings
-            </h1>
+            <h1 className="text-3xl font-bold">Bookings</h1>
 
-            <p className="text-gray-500 mt-2">
-              Manage customer bookings.
-            </p>
+            <p className="text-gray-500 mt-2">Manage customer bookings.</p>
           </div>
 
-          <button
-            onClick={handleAdd}
-            className="bg-[#DEE33E] px-5 py-3 rounded-xl font-semibold"
-          >
-            + Add Booking
-          </button>
-
+          <div className="text-sm text-gray-500">
+            Pending bookings require admin approval.
+          </div>
         </div>
 
         <div className="flex justify-between gap-4 mb-6">
-
           <input
             className="border rounded-lg px-4 py-2 w-80"
             placeholder="Search booking..."
             value={search}
-            onChange={(e) =>
-              setSearch(e.target.value)
-            }
+            onChange={(e) => setSearch(e.target.value)}
           />
 
-          <StatusSelect
-            value={status}
-            onChange={setStatus}
-          />
-
+          <StatusSelect value={status} onChange={setStatus} />
         </div>
 
         <Table
@@ -186,40 +165,27 @@ export default function Bookings() {
         >
           {filteredBookings.length === 0 && (
             <tr>
-              <td
-                colSpan={8}
-                className="text-center py-10 text-gray-500"
-              >
+              <td colSpan={8} className="text-center py-10 text-gray-500">
                 No booking data found.
               </td>
             </tr>
           )}
 
           {filteredBookings.map((booking) => (
-            <tr
-              key={booking.id}
-              className="border-b hover:bg-gray-50"
-            >
-              <td className="py-5 font-medium">
-                {booking.booking_code}
-              </td>
+            <tr key={booking.id} className="border-b hover:bg-gray-50">
+              <td className="py-5 font-medium">{booking.booking_code}</td>
+
+              <td>{booking.users?.fullname}</td>
 
               <td>
-                {booking.users?.fullname}
-              </td>
-
-              <td>
-                {booking.vehicles?.brand}{" "}
-                {booking.vehicles?.model}
+                {booking.vehicles?.brand} {booking.vehicles?.model}
                 <br />
                 <span className="text-xs text-gray-500">
                   {booking.vehicles?.plate_number}
                 </span>
               </td>
 
-              <td>
-                {booking.services?.service_name}
-              </td>
+              <td>{booking.services?.service_name}</td>
 
               <td>
                 {booking.booking_date}
@@ -235,40 +201,34 @@ export default function Bookings() {
                     booking.status === "Completed"
                       ? "success"
                       : booking.status === "Pending"
-                      ? "pending"
-                      : booking.status === "Cancelled"
-                      ? "warning"
-                      : "default"
+                        ? "pending"
+                        : booking.status === "Cancelled"
+                          ? "warning"
+                          : "default"
                   }
                   text={booking.status}
                 />
               </td>
 
-              <td>
-                {booking.mechanics?.fullname ?? "-"}
-              </td>
+              <td>{booking.mechanics?.fullname ?? "-"}</td>
 
-              <td className="space-x-2">
-
+              {booking.status === "Pending" ? (
                 <button
-                  onClick={() =>
-                    handleEdit(booking)
-                  }
-                  className="text-blue-600 font-medium"
+                  onClick={() => handleProcess(booking)}
+                  className="text-[#9FA324] font-semibold"
                 >
-                  Edit
+                  Process
                 </button>
-
+              ) : booking.status === "Confirmed" ? (
                 <button
-                  onClick={() =>
-                    handleDelete(booking)
-                  }
-                  className="text-red-500 font-medium"
+                  onClick={() => handleProcess(booking)}
+                  className="text-blue-600 font-semibold"
                 >
-                  Delete
+                  View
                 </button>
-
-              </td>
+              ) : (
+                <span className="text-gray-400">Completed</span>
+              )}
             </tr>
           ))}
         </Table>
@@ -281,12 +241,14 @@ export default function Bookings() {
           setSelectedBooking(null);
         }}
       >
-        <BookingForm
-          initialData={selectedBooking}
-          onSubmit={handleSubmit}
+        <BookingProcessForm
+          booking={selectedBooking}
+          onSuccess={() => {
+            setOpenModal(false);
+            getBookings();
+          }}
           onCancel={() => {
             setOpenModal(false);
-            setSelectedBooking(null);
           }}
         />
       </FormModal>

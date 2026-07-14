@@ -1,4 +1,35 @@
-export default function RevenueChart() {
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+export default function RevenueChart({ data }) {
+  const monthly = {};
+
+  data.forEach((trx) => {
+    if (!trx.payment_date) return;
+
+    const month = new Date(trx.payment_date).toLocaleString(
+      "en-US",
+      {
+        month: "short",
+      }
+    );
+
+    monthly[month] =
+      (monthly[month] || 0) + Number(trx.total_amount);
+  });
+
+  const chart = Object.keys(monthly).map((month) => ({
+    month,
+    revenue: monthly[month],
+  }));
+
   return (
     <div className="bg-white rounded-2xl shadow p-6 h-[350px]">
 
@@ -6,9 +37,28 @@ export default function RevenueChart() {
         Monthly Revenue
       </h2>
 
-      <div className="h-full flex items-center justify-center text-gray-400">
-        Revenue Chart (Coming Soon)
-      </div>
+      <ResponsiveContainer width="100%" height={260}>
+
+        <LineChart data={chart}>
+
+          <CartesianGrid strokeDasharray="3 3" />
+
+          <XAxis dataKey="month" />
+
+          <YAxis />
+
+          <Tooltip />
+
+          <Line
+            type="monotone"
+            dataKey="revenue"
+            stroke="#9FA324"
+            strokeWidth={3}
+          />
+
+        </LineChart>
+
+      </ResponsiveContainer>
 
     </div>
   );

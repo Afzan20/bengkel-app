@@ -6,6 +6,7 @@ import MemberLayout from "./layouts/MemberLayout";
 import AuthLayout from "./layouts/AuthLayout";
 
 // AUTH
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 
@@ -41,10 +42,10 @@ export default function App() {
       }
     >
       <Routes>
-
         {/* AUTH */}
         <Route element={<AuthLayout />}>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
 
@@ -73,7 +74,6 @@ export default function App() {
           <Route path="/member/profile" element={<MemberProfile />} />
           <Route path="/member/settings" element={<MemberSettings />} />
         </Route>
-
       </Routes>
     </Suspense>
   );

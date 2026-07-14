@@ -1,19 +1,27 @@
-const services = [
-  {
-    name: "Oil Change",
-    total: 85,
-  },
-  {
-    name: "Engine Tune Up",
-    total: 63,
-  },
-  {
-    name: "Brake Service",
-    total: 42,
-  },
-];
+export default function TopServices({
+  bookings,
+  services,
+}) {
+  const result = {};
 
-export default function TopServices() {
+  bookings.forEach((booking) => {
+    const service = services.find(
+      (s) => s.id === booking.service_id
+    );
+
+    if (!service) return;
+
+    result[service.service_name] =
+      (result[service.service_name] || 0) + 1;
+  });
+
+  const top = Object.entries(result)
+    .map(([name, total]) => ({
+      name,
+      total,
+    }))
+    .sort((a, b) => b.total - a.total);
+
   return (
     <div className="bg-white rounded-2xl shadow p-6">
 
@@ -23,17 +31,21 @@ export default function TopServices() {
 
       <div className="space-y-4">
 
-        {services.map((item) => (
+        {top.map((item) => (
+
           <div
             key={item.name}
-            className="flex justify-between"
+            className="flex justify-between border-b pb-2"
           >
+
             <span>{item.name}</span>
 
-            <span className="font-semibold">
+            <span className="font-bold">
               {item.total}
             </span>
+
           </div>
+
         ))}
 
       </div>

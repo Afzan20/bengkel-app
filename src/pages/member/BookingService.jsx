@@ -33,11 +33,18 @@ export default function BookingService() {
     const { data, error } = await supabase
       .from("services")
       .select("*")
-      .eq("status", "Active");
+      .eq("status", "Available")
+      .order("service_name");
 
-    if (!error) {
-      setServices(data);
+    console.log(data);
+    console.log(error);
+
+    if (error) {
+      console.log(error);
+      return;
     }
+
+    setServices(data);
   }
 
   async function handleBooking() {
@@ -54,23 +61,20 @@ export default function BookingService() {
       return;
     }
 
-    const bookingCode =
-      "BK" + Date.now().toString().slice(-8);
+    const bookingCode = "BK" + Date.now().toString().slice(-8);
 
-    const { error } = await supabase
-      .from("bookings")
-      .insert([
-        {
-          booking_code: bookingCode,
-          user_id: currentUser.id,
-          vehicle_id: vehicleId,
-          service_id: serviceId,
-          booking_date: bookingDate,
-          booking_time: bookingTime,
-          complaint,
-          status: "Pending",
-        },
-      ]);
+    const { error } = await supabase.from("bookings").insert([
+      {
+        booking_code: bookingCode,
+        user_id: currentUser.id,
+        vehicle_id: vehicleId,
+        service_id: serviceId,
+        booking_date: bookingDate,
+        booking_time: bookingTime,
+        complaint,
+        status: "Pending",
+      },
+    ]);
 
     if (error) {
       console.log(error);
@@ -89,109 +93,75 @@ export default function BookingService() {
 
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow">
-
-      <h1 className="text-3xl font-bold mb-8">
-        Booking Service
-      </h1>
+      <h1 className="text-3xl font-bold mb-8">Booking Service</h1>
 
       <div className="space-y-5">
-
         <div>
-          <label className="font-medium">
-            Vehicle
-          </label>
+          <label className="font-medium">Vehicle</label>
 
           <select
             value={vehicleId}
-            onChange={(e) =>
-              setVehicleId(e.target.value)
-            }
+            onChange={(e) => setVehicleId(e.target.value)}
             className="w-full border rounded-lg p-3 mt-2"
           >
-            <option value="">
-              Select Vehicle
-            </option>
+            <option value="">Select Vehicle</option>
 
             {vehicles.map((vehicle) => (
-              <option
-                key={vehicle.id}
-                value={vehicle.id}
-              >
-                {vehicle.brand} {vehicle.model} (
-                {vehicle.plate_number})
+              <option key={vehicle.id} value={vehicle.id}>
+                {vehicle.brand} {vehicle.model} ({vehicle.plate_number})
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="font-medium">
-            Service
-          </label>
+          <label className="font-medium">Service</label>
 
           <select
             value={serviceId}
-            onChange={(e) =>
-              setServiceId(e.target.value)
-            }
+            onChange={(e) => setServiceId(e.target.value)}
             className="w-full border rounded-lg p-3 mt-2"
           >
-            <option value="">
-              Select Service
-            </option>
+            <option value="">Select Service</option>
 
             {services.map((service) => (
-              <option
-                key={service.id}
-                value={service.id}
-              >
-                {service.service_name}
+              <option key={service.id} value={service.id}>
+                {service.service_name} - Rp{" "}
+                {Number(service.price).toLocaleString("id-ID")}
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="font-medium">
-            Booking Date
-          </label>
+          <label className="font-medium">Booking Date</label>
 
           <input
             type="date"
             value={bookingDate}
-            onChange={(e) =>
-              setBookingDate(e.target.value)
-            }
+            onChange={(e) => setBookingDate(e.target.value)}
             className="w-full border rounded-lg p-3 mt-2"
           />
         </div>
 
         <div>
-          <label className="font-medium">
-            Booking Time
-          </label>
+          <label className="font-medium">Booking Time</label>
 
           <input
             type="time"
             value={bookingTime}
-            onChange={(e) =>
-              setBookingTime(e.target.value)
-            }
+            onChange={(e) => setBookingTime(e.target.value)}
             className="w-full border rounded-lg p-3 mt-2"
           />
         </div>
 
         <div>
-          <label className="font-medium">
-            Complaint
-          </label>
+          <label className="font-medium">Complaint</label>
 
           <textarea
             rows={4}
             value={complaint}
-            onChange={(e) =>
-              setComplaint(e.target.value)
-            }
+            onChange={(e) => setComplaint(e.target.value)}
             className="w-full border rounded-lg p-3 mt-2"
             placeholder="Describe your vehicle problem..."
           />
@@ -203,7 +173,6 @@ export default function BookingService() {
         >
           Book Now
         </button>
-
       </div>
     </div>
   );

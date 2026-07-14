@@ -111,7 +111,7 @@ export default function MemberSidebar() {
 
           setOpenModal(false);
 
-          navigate("/");
+          navigate("/login");
         }}
       />
     </aside>

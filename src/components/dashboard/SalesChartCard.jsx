@@ -1,34 +1,121 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabase";
+
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
+
 export default function SalesChartCard() {
-  const chartData = [70, 120, 90, 160, 110, 140, 80];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    loadChart();
+  }, []);
+
+  async function loadChart() {
+    const { data: bookings, error } = await supabase
+      .from("bookings")
+      .select("status");
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    const pending = bookings.filter(
+      (b) => b.status === "Pending"
+    ).length;
+
+    const confirmed = bookings.filter(
+      (b) => b.status === "Confirmed"
+    ).length;
+
+    const completed = bookings.filter(
+      (b) => b.status === "Completed"
+    ).length;
+
+    const cancelled = bookings.filter(
+      (b) => b.status === "Cancelled"
+    ).length;
+
+    setData([
+      {
+        status: "Pending",
+        total: pending,
+      },
+      {
+        status: "Confirmed",
+        total: confirmed,
+      },
+      {
+        status: "Completed",
+        total: completed,
+      },
+      {
+        status: "Cancelled",
+        total: cancelled,
+      },
+    ]);
+  }
 
   return (
     <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
-      <div className="flex justify-between mb-6">
+
+      <div className="flex justify-between items-center mb-8">
+
         <div>
-          <p className="text-sm text-gray-400">Overall Sales</p>
-          <h1 className="text-[32px] font-bold leading-[125%]">
-            £56,345.98
-          </h1>
+
+          <h2 className="text-2xl font-bold">
+            Booking Statistics
+          </h2>
+
+          <p className="text-gray-500 mt-2">
+            Current booking status overview
+          </p>
+
         </div>
 
-        <button className="bg-[#F7F7F7] px-4 py-2 rounded-lg text-sm">
-          Last 7 month
-        </button>
       </div>
 
-      <div className="h-56 flex items-end gap-5">
-        {chartData.map((height, index) => (
-          <div
-            key={index}
-            className="flex-1 bg-[#DEE33E]/20 rounded-t-xl relative"
-          >
-            <div
-              style={{ height: `${height}px` }}
-              className="absolute bottom-0 w-full bg-[#DEE33E] rounded-t-xl"
+      <div className="h-80">
+
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
+
+          <BarChart data={data}>
+
+            <CartesianGrid
+              strokeDasharray="3 3"
             />
-          </div>
-        ))}
+
+            <XAxis
+              dataKey="status"
+            />
+
+            <YAxis />
+
+            <Tooltip />
+
+            <Bar
+              dataKey="total"
+              fill="#DEE33E"
+              radius={[10, 10, 0, 0]}
+            />
+
+          </BarChart>
+
+        </ResponsiveContainer>
+
       </div>
+
     </div>
   );
 }

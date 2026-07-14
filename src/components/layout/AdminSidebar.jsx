@@ -111,7 +111,7 @@ export default function AdminSidebar() {
 
           setOpenModal(false);
 
-          navigate("/");
+          navigate("/login");
         }}
       />
     </aside>

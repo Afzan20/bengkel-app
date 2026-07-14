@@ -1,11 +1,14 @@
-const activities = [
-  "Afzan completed payment INV-001",
-  "Budi booked Oil Change",
-  "Rizky completed Engine Repair",
-  "Dimas upgraded membership",
-];
+export default function RecentActivity({
+  transactions,
+}) {
+  const recent = [...transactions]
+    .sort(
+      (a, b) =>
+        new Date(b.created_at) -
+        new Date(a.created_at)
+    )
+    .slice(0, 6);
 
-export default function RecentActivity() {
   return (
     <div className="bg-white rounded-2xl shadow p-6">
 
@@ -15,13 +18,29 @@ export default function RecentActivity() {
 
       <div className="space-y-4">
 
-        {activities.map((activity, index) => (
+        {recent.map((trx) => (
+
           <div
-            key={index}
-            className="border-b pb-2"
+            key={trx.id}
+            className="border-b pb-3"
           >
-            {activity}
+
+            <h3 className="font-semibold">
+              {trx.invoice_number}
+            </h3>
+
+            <p className="text-sm text-gray-500">
+
+              {trx.payment_method}
+
+              {" • "}
+
+              {trx.payment_status}
+
+            </p>
+
           </div>
+
         ))}
 
       </div>

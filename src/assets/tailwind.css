@@ -142,3 +142,8 @@ body {
     @apply font-sans;
   }
 }
+
+html,
+body{
+    scroll-behavior:smooth;
+}
